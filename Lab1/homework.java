@@ -1,4 +1,10 @@
 public class homework {
+    public enum BorderType {
+        NONE,
+        BOUNDING_BOX,
+        BORDER,
+    }
+
     public static String imgToString(int n, int img[][]) {
         String output = "";
 
@@ -26,7 +32,7 @@ public class homework {
         }
     }
 
-    public static void draw_rectangle(int n, int img[][], int width, int height, boolean boundingBox) {
+    public static void draw_rectangle(int n, int img[][], int width, int height, BorderType borderType) {
         long start = System.currentTimeMillis();
         fill(n, img, 255);
 
@@ -39,8 +45,10 @@ public class homework {
         }
         long end = System.currentTimeMillis();
 
-        if (boundingBox) {
+        if (borderType == BorderType.BOUNDING_BOX) {
             addBoundingBox(n, img, 0);
+        } else if (borderType == BorderType.BORDER) {
+            addBorder(n, img, 0);
         }
 
         if (n < 300) {
@@ -50,7 +58,7 @@ public class homework {
         }
     }
 
-    public static void draw_circle(int n, int img[][], int radius, boolean boundingBox) {
+    public static void draw_circle(int n, int img[][], int radius, BorderType borderType) {
         long start = System.currentTimeMillis();
         fill(n, img, 0);
 
@@ -70,8 +78,10 @@ public class homework {
 
         long end = System.currentTimeMillis();
 
-        if (boundingBox) {
+        if (borderType == BorderType.BOUNDING_BOX) {
             addBoundingBox(n, img, 255);
+        } else if (borderType == BorderType.BORDER) {
+            addBorder(n, img, 255);
         }
         
         if (n < 300) {
@@ -105,6 +115,32 @@ public class homework {
         }
     }
 
+    public static void addBorder(int n, int img[][], int shapeColor) {
+        int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1};
+        int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0};
+
+        for (int y = 0; y < n; ++y) {
+            for (int x = 0; x < n; ++x) {
+                int neighbourCount = 0;
+
+                if (img[y][x] == shapeColor) {
+                    for (int i = 0; i < 8; ++i) {
+                        int vx = x + dx[i];
+                        int vy = y + dy[i];
+
+                        if (vx >= 0 && vy >= 0 && vx < n && vy < n && (img[vy][vx] == shapeColor || img[vy][vx] == 100)) {
+                            neighbourCount++;
+                        }
+                    }
+                }
+
+                if (neighbourCount > 0 && neighbourCount < 8) {
+                    img[y][x] = 100;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         if (args.length < 2) {
             System.err.println("Wrong number of parameters!");
@@ -113,17 +149,23 @@ public class homework {
         int size = Integer.parseInt(args[0]);
         int[][] img = new int[size][size];
 
-        boolean boundingBox = false;
+        BorderType type = BorderType.NONE;
         if (args.length >= 3) {
-            boundingBox = Boolean.parseBoolean(args[2]);
+            if (args[2].equals("border")) {
+                type = BorderType.BORDER;
+            } else if (args[2].equals("bounding_box")) {
+                type = BorderType.BOUNDING_BOX;
+            }
         }
 
         if (args[1].equals("circle")) {
-            draw_circle(size, img, size / 3, boundingBox);
+            draw_circle(size, img, size / 3, type);
         } else if (args[1].equals("rectangle")) {
-            draw_rectangle(size, img, size * 8 / 10, size * 3 / 10, boundingBox);
+            draw_rectangle(size, img, size * 8 / 10, size * 3 / 10, type);
         } else {
             System.err.printf("Wrong shape {%s}!", args[1]);
         }
+
+        // 30_500
     }
 }
