@@ -27,6 +27,7 @@ public class homework {
     }
 
     public static void draw_rectangle(int n, int img[][], int width, int height, boolean boundingBox) {
+        long start = System.currentTimeMillis();
         fill(n, img, 255);
 
         int startX = (n - width)  / 2;
@@ -36,14 +37,21 @@ public class homework {
                 img[y][x] = 0;
             }
         }
+        long end = System.currentTimeMillis();
 
         if (boundingBox) {
             addBoundingBox(n, img, 0);
         }
-        System.out.println(imgToString(n, img));
+
+        if (n < 300) {
+            System.out.println(imgToString(n, img));
+        } else {
+            System.out.println("Time is: " + (end - start) + "ms");
+        }
     }
 
     public static void draw_circle(int n, int img[][], int radius, boolean boundingBox) {
+        long start = System.currentTimeMillis();
         fill(n, img, 0);
 
         int center = n / 2;
@@ -60,10 +68,17 @@ public class homework {
             }
         }
 
+        long end = System.currentTimeMillis();
+
         if (boundingBox) {
             addBoundingBox(n, img, 255);
         }
-        System.out.println(imgToString(n, img));
+        
+        if (n < 300) {
+            System.out.println(imgToString(n, img));
+        } else {
+            System.out.println("Time is: " + (end - start) + "ms");
+        }
     }
 
     public static void addBoundingBox(int n, int img[][], int shapeColor) {
