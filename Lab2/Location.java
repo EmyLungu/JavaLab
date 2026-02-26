@@ -1,23 +1,33 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Location
  */
 
-public class Location {
-    public enum LocationType {
-        CITY,
-        AIRPORT,
-        GAS_STATION,
-    }
-
+public abstract sealed class Location permits CityLocation, AirportLocation, GasStationLocation {
+    int id;             // Index inside the problem.locations
     String name;
-    LocationType type;
     double x, y;
+    List<Road> roads; // The indices of the roads this location connects to
 
-    Location(String name, LocationType type, double x, double y) {
+    /**
+     * Creates a new Location
+     */
+    public Location(String name, double x, double y) {
+        this.id = -1;
         this.name = name;
-        this.type = type;
         this.x = x;
         this.y = y;
+        this.roads = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -26,14 +36,6 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocationType getType() {
-        return type;
-    }
-
-    public void setType(LocationType type) {
-        this.type = type;
     }
 
     public double getX() {
@@ -54,6 +56,22 @@ public class Location {
 
     @Override
     public String toString() {
-        return this.name + " of type " + this.type + " is at (" + this.x + "," + this.y + ")";
+        return this.name + " (" + this.x + ", " + this.y + ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+
+        Location otherLocation = (Location) obj;
+        return (
+            this.getName().equals(otherLocation.getName()) &&
+            this.getX() == otherLocation.getX() &&
+            this.getY() == otherLocation.getY()
+        );
     }
 }
