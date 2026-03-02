@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class lab {
@@ -20,11 +21,11 @@ public class lab {
         Road drumIasiBacau       = new Road(Road.RoadType.HIGHWAY, iasi,   bacau,     130.0);
         Road drumBacauBrasov     = new Road(Road.RoadType.HIGHWAY, bacau,  brasov,    170.0);
         Road drumBrasovBucuresti = new Road(Road.RoadType.HIGHWAY, brasov, bucuresti, 180.0);
-        p.addRoad(drumIasiVaslui);
-        p.addRoad(drumVasluiBucuresti);
-        p.addRoad(drumIasiBacau);
-        p.addRoad(drumBacauBrasov);
-        p.addRoad(drumBrasovBucuresti);
+        p.addRoad(iasi, drumIasiVaslui);
+        p.addRoad(vaslui, drumVasluiBucuresti);
+        p.addRoad(iasi, drumIasiBacau);
+        p.addRoad(bacau, drumBacauBrasov);
+        p.addRoad(brasov, drumBrasovBucuresti);
 
         p.setStart(iasi);
         p.setEnd(bucuresti);
@@ -61,16 +62,14 @@ public class lab {
     }
 
     public static void largeTest(boolean toPrint) {
-        double start = System.currentTimeMillis();
-        Runtime runtime = Runtime.getRuntime();
-
         Problem p = new Problem();
         Generator gen = new Generator();
         gen.generateCities(p, 100_000);
         gen.generateRoads(p, 4_500_000);
 
-        p.setStart(p.locations.get(0));
-        p.setEnd(p.locations.get(p.locations.size() - 1));
+        ArrayList<Location> allLocations = new ArrayList<>(p.locations.keySet());
+        p.setStart(allLocations.get(0));
+        p.setEnd(allLocations.get(allLocations.size() - 1));
 
         Solution solution = new Solution();
         List<Location> path;
@@ -90,15 +89,25 @@ public class lab {
                 System.out.println(loc.toString() + " -> ");
             }
 
-        double end = System.currentTimeMillis();
-        long memoryUsed = runtime.totalMemory() - runtime.freeMemory();
-
-        System.out.println("Execution time: " + (end - start) + "ms");
-        System.out.println("Memory used: " + memoryUsed / (1024 * 1024) + " MB");
     }
 
     public static void main(String[] args) {
-        example();
-        // largeTest(true);
+        if (args.length != 1) {
+            System.err.println("Usage: java lab [1/2] | 1 = example() | 2 = largeTest()");
+            return;
+        }
+
+        double start = System.currentTimeMillis();
+        Runtime runtime = Runtime.getRuntime();
+
+        int which = Integer.parseInt(args[0]);
+        if (which == 1) example();
+        else if (which == 2) largeTest(true);
+
+        double end = System.currentTimeMillis();
+        long memoryUsed = runtime.totalMemory() - runtime.freeMemory();
+
+        System.out.println("Total Execution time: " + (end - start) + "ms");
+        System.out.println("Memory used: " + memoryUsed / (1024 * 1024) + " MB");
     }
 }

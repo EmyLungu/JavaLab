@@ -1,18 +1,23 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
  * Problem
  */
 public class Problem {
-    List<Location> locations;
+    HashMap<Location, ArrayList<Road>> locations;
+
     Location start;
     Location end;
 
+    /**
+     * Initializes the problem
+     */
     public Problem() {
-        this.locations = new ArrayList<>();
+        this.locations = new HashMap<>();
         this.start = null;
         this.end = null;
     }
@@ -21,28 +26,19 @@ public class Problem {
      * Adds location of to the list if it doesn't exist yet
      */
     public void addLocation(Location newLocation) {
-        for (Location location : this.locations) {
-            if (location.equals(newLocation)) {
-                return;
-            }
+        if (!this.locations.containsKey(newLocation)) {
+            this.locations.put(newLocation, new ArrayList<>());
         }
-        this.locations.add(newLocation);
-        newLocation.setId(this.locations.size() - 1);
     }
 
     /**
-     * Adds a Road to each of its endpoints
+     * Adds a Road @param newRoad to a Location @param location
      */
-    public void addRoad(Road newRoad) {
-        for (Location loc : newRoad.getEnds()) { // Foreach endpoint of the new road
-            // If there road deosnt exist yet -> add the new road the the endpoint
-            for (Road road : loc.roads) {
-                if (road.equals(newRoad)) {
-                    return;
-                }
-            }
+    public void addRoad(Location location, Road newRoad) {
+        ArrayList<Road> loc1 = this.locations.get(location);
 
-            loc.roads.add(newRoad);
+        if (loc1 != null) {
+            loc1.add(newRoad);
         }
     }
 
@@ -69,26 +65,22 @@ public class Problem {
         if (this.start == null || this.end == null)
             return false;
 
-        // BFS Algorithm
-        boolean[] visited = new boolean[this.locations.size()];
+        HashSet<Location> visited = new HashSet<>();
         Queue<Location> q = new LinkedList<>();
         q.add(this.start);
-        visited[this.start.getId()] = true;
+        visited.add(this.start);
 
         while (!q.isEmpty()) {
             Location loc = q.poll();
-            visited[loc.getId()] = true;
+            visited.add(loc);
 
             if (loc.equals(this.end))
                 return true;
 
-            for (Road road : loc.roads) {
-                // The road has 2 ends, we get the one that is different from where we are
-                Location[] ends = road.getEnds();
-                Location neighbour = (ends[0].equals(loc) ? ends[1] : ends[0]);
-
-                if (!visited[neighbour.getId()]) {
-                    q.add(neighbour);
+            // Add the unvisited neighbours
+            for (Road road : locations.get(loc)) {
+                if (!visited.contains(road.target)) {
+                    q.add(road.target);
                 }
             }
         }

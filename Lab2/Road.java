@@ -15,7 +15,7 @@ public class Road {
         public int getSpeed() { return speed; }
     }
 
-    Location[] ends;
+    Location target;
 
     public RoadType type;
     double length;
@@ -31,9 +31,8 @@ public class Road {
         double dy = a.getY() - b.getY();
         double dist = Math.sqrt(dx * dx + dy * dy);
         this.setLength(Math.max(length, dist));
-        this.ends = new Location[2];
-        ends[0] = a;
-        ends[1] = b;
+
+        this.target = b;
     }
 
     Road(RoadType type, Location a, Location b) {
@@ -44,9 +43,7 @@ public class Road {
         double dist = Math.sqrt(dx * dx + dy * dy);
         this.setLength(dist);
         
-        this.ends = new Location[2];
-        ends[0] = a;
-        ends[1] = b;
+        this.target = b;
     }
 
     public RoadType getType() {
@@ -69,15 +66,19 @@ public class Road {
         return this.getType().getSpeed();
     }
 
-    public Location[] getEnds() {
-        return ends;
+    public Location getTarget() {
+        return target;
+    }
+
+    public void setTarget(Location target) {
+        this.target = target;
     }
 
     @Override
     public String toString() {
         return this.type + ", Length = " +
-               this.length + "km, (" +
-               this.ends[0].getName() + " | " + this.ends[1].getName() +
+               this.length + "km, (Towards: " +
+               this.target.getName() +
                "), Speed limit = " + this.getType().getSpeed();
     }
 
@@ -90,13 +91,9 @@ public class Road {
             return false;
 
         Road otherRoad = (Road) obj;
-        
-        boolean sameEnds =
-            (this.ends[0].equals(otherRoad.ends[0]) && this.ends[1].equals(otherRoad.ends[1])) ||
-            (this.ends[0].equals(otherRoad.ends[1]) && this.ends[1].equals(otherRoad.ends[0]));
 
         return (
-            sameEnds &&
+            this.target.equals(otherRoad.target) &&
             this.getType() == otherRoad.getType()
         );
     }
