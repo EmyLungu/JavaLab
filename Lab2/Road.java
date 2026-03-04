@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Road
  */
@@ -80,6 +82,11 @@ public class Road {
                this.length + "km, (Towards: " +
                this.target.getName() +
                "), Speed limit = " + this.getType().getSpeed();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(target, type, length);
     }
 
     @Override

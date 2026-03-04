@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Location
  */
@@ -42,6 +44,11 @@ public abstract sealed class Location permits CityLocation, AirportLocation, Gas
     @Override
     public String toString() {
         return this.name + " (" + this.x + ", " + this.y + ")";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, x, y);
     }
 
     @Override

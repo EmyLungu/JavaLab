@@ -61,11 +61,11 @@ public class lab {
         // Path 2 (130/150) + (170/150) + (180/150) = 3.19 hours
     }
 
-    public static void largeTest(boolean toPrint) {
+    public static void largeTest(boolean toPrint, int numCities, int numRoads) {
         Problem p = new Problem();
         Generator gen = new Generator();
-        gen.generateCities(p, 100_000);
-        gen.generateRoads(p, 4_500_000);
+        gen.generateCities(p, numCities);
+        gen.generateRoads(p, numRoads);
 
         ArrayList<Location> allLocations = new ArrayList<>(p.locations.keySet());
         p.setStart(allLocations.get(0));
@@ -102,7 +102,7 @@ public class lab {
 
         int which = Integer.parseInt(args[0]);
         if (which == 1) example();
-        else if (which == 2) largeTest(true);
+        else if (which == 2) largeTest(true, 100_000, 4_500_000);
 
         double end = System.currentTimeMillis();
         long memoryUsed = runtime.totalMemory() - runtime.freeMemory();
