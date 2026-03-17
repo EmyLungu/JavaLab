@@ -83,8 +83,7 @@ public class City {
 
         this.streets.stream()
             .filter(s -> s.getLength() > value)
-            .filter(s -> degree.get(s.getA()) >= 3 ||
-                         degree.get(s.getB()) >= 3)
+            .filter(s -> degree.get(s.getA()) + degree.get(s.getB()) - 2 >= 3)
             .forEach(System.out::println);
     }
 
