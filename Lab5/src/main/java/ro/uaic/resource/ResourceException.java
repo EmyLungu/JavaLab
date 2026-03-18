@@ -1,4 +1,4 @@
-package ro.uaic.catalog;
+package ro.uaic.resource;
 
 /**
  * ResourceException

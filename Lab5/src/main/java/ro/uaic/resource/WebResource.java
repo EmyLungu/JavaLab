@@ -1,4 +1,4 @@
-package ro.uaic.catalog;
+package ro.uaic.resource;
 
 import java.awt.Desktop;
 import java.net.URI;
