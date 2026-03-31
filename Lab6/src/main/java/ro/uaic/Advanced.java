@@ -9,7 +9,7 @@ public class Advanced {
     public static void main(String[] args) {
         try {
             DBManager.setUseMigration(true);
-            DBManager.loadMovies("src/main/resources/movies_metadata.csv", 64);
+            DBManager.loadMovies("src/main/resources/movies_metadata.csv", 200);
             DBManager.loadActors("src/main/resources/credits.csv", 1000);
 
             MoviePartitioner.createPartitionedLists();

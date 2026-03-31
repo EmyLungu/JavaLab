@@ -1,0 +1,25 @@
+curl -X GET http://localhost:8080/movies
+
+curl -X POST http://localhost:8080/movies \
+     -H "Content-Type: application/json" \
+     -d '{
+           "title": "test1-curl",
+           "genre_id": 1,
+           "release_date": "2010-07-16",
+           "duration": 148,
+           "score": 8
+         }'
+
+curl -X PUT http://localhost:8080/movies/1 \
+     -H "Content-Type: application/json" \
+     -d '{
+           "title": "test1-curl-updated",
+           "genre_id": 1,
+           "release_date": "2010-07-16",
+           "duration": 150,
+           "score": 9.0
+         }'
+
+curl -X PATCH "http://localhost:8080/movies/1/score?score=3"
+
+curl -X DELETE "http://localhost:8080/movies/1"
