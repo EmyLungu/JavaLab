@@ -8,6 +8,9 @@ homework:
 advanced:
 	@mvn exec:java -Dexec.mainClass="ro.uaic.Advanced"
 
+client:
+	@mvn exec:java -Dexec.mainClass="ro.uaic.Client"
+
 clean:
 	@rm -rf .settings
 	@rm -rf target

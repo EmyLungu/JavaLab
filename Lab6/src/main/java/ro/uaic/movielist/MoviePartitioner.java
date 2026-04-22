@@ -11,8 +11,6 @@ import java.util.Set;
 
 import ro.uaic.DBManager;
 import ro.uaic.actor.ActorDAO;
-import ro.uaic.movielist.MovieList;
-import ro.uaic.movielist.MovieListDAO;
 
 /**
  * MoviePartinioner
@@ -87,33 +85,6 @@ public class MoviePartitioner {
         return lists;
     }
     
-    public static void balanceLists(List<List<Movie>> lists) {
-        if (lists.isEmpty())
-            return;
-        
-        int totalMovies = lists.stream().mapToInt(List::size).sum();
-        int targetSize = (int) Math.ceil((double) totalMovies / lists.size());
-        
-        boolean changed;
-        do {
-            changed = false;
-            lists.sort((a, b) -> b.size() - a.size());
-            
-            for (int i = 0; i < lists.size(); i++) {
-                if (lists.get(i).size() <= targetSize) break;
-                
-                for (int j = lists.size() - 1; j > i; j--) {
-                    if (lists.get(j).size() < targetSize) {
-                        Movie movie = lists.get(i).remove(lists.get(i).size() - 1);
-                        lists.get(j).add(movie);
-                        changed = true;
-                        break;
-                    }
-                }
-            }
-        } while (changed);
-    }
-    
     public static void createPartitionedLists() throws Exception {
         List<Movie> movies = DBManager.getMovies();
 
@@ -121,7 +92,6 @@ public class MoviePartitioner {
         
         Map<Integer, List<Integer>> graph = buildGraph(movies);
         List<List<Movie>> partitions = partitionMovies(movies, graph);
-        // balanceLists(partitions);
         
         MovieListDAO listDAO = new MovieListDAO();
         for (int i = 0; i < partitions.size(); i++) {

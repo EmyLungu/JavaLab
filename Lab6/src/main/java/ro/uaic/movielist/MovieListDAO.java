@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import ro.uaic.DBManager;
 import ro.uaic.movie.Movie;
-import ro.uaic.movie.MovieDAO;
 
 /**
  * MovieListDAO
