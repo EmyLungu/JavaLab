@@ -19,7 +19,7 @@ public class App extends Application {
             FXMLLoader compulsory = new FXMLLoader(getClass().getResource("compulsory.fxml"));
             Parent compulsoryP = FXMLLoader.load(getClass().getResource("compulsory.fxml"));
             Parent homework = FXMLLoader.load(getClass().getResource("homework.fxml"));
-            Parent advanced = FXMLLoader.load(getClass().getResource("homework.fxml"));
+            Parent advanced = FXMLLoader.load(getClass().getResource("advanced.fxml"));
             stage.setTitle("Lab 9 - Emy Lungu");
 
             Scene scene = new Scene(compulsory.load(), 768, 768);
@@ -36,7 +36,7 @@ public class App extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            System.err.println("Could not load FXML file!");
+            System.err.println("Could not load FXML file! " + e);
         }
     }
 
