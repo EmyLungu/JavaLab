@@ -4,12 +4,16 @@ import java.io.Serializable;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import ro.uaic.entities.Entity;
+
 public class Cell implements Serializable {
     private int row, col;
     private boolean top, right, bottom, left;
     private boolean[] wallHovered = {false, false, false, false};
     private boolean hovered;
     private boolean selected;
+
+    private Entity occupied;
 
     public Cell(int row, int col) {
         setRow(row);
@@ -19,6 +23,8 @@ public class Cell implements Serializable {
         setRight(true);
         setBottom(true);
         setLeft(true);
+        
+        setOccupied(null);
     }
 
     public int getRow() {
@@ -92,6 +98,14 @@ public class Cell implements Serializable {
 
     public boolean[] getWallsHovered() {
         return wallHovered;
+    }
+
+    public Entity isOccupied() {
+        return occupied;
+    }
+
+    public synchronized void setOccupied(Entity occupied) {
+        this.occupied = occupied;
     }
 
     public void drawWall(int idx, GraphicsContext gc, double x, double y, double CELL_SIZE) {

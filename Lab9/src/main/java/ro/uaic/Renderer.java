@@ -1,7 +1,10 @@
 package ro.uaic;
 
+import ro.uaic.entities.*;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -17,10 +20,19 @@ public class Renderer {
     public static Cell lastSelected = null;
 
     private static double CELL_SIZE = 30.0;
+    private static double EMOJI_SIZE = 48.0;
+
+    private static Image bunnyImg;
+    private static Image robotImg;
+
+    private static boolean gameOver = false;
 
     public static void initialize(Canvas mazeCanvas_, Cell[][] cells_) {
         cells = cells_;
         mazeCanvas = mazeCanvas_;
+
+        bunnyImg = new Image(App.class.getResource("bunny.png").toExternalForm());
+        robotImg  = new Image(App.class.getResource("robot.png").toExternalForm());
 
         mazeCanvas.setOnMouseMoved(event -> {
             if (cells == null)
@@ -114,6 +126,22 @@ public class Renderer {
                 }
 
                 gc.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                Entity occupant = cell.isOccupied();
+                if (occupant != null) {
+                    Image emoji = bunnyImg;
+                    if (occupant instanceof Bunny) {
+                        emoji = bunnyImg;
+                    } else if (occupant instanceof Robot) {
+                        emoji = robotImg;
+                    }
+                    gc.drawImage(
+                        emoji,
+                        x + CELL_SIZE / 2 - EMOJI_SIZE / 2,
+                        y + CELL_SIZE / 2 - EMOJI_SIZE / 2,
+                        EMOJI_SIZE, EMOJI_SIZE
+                    );
+                }
 
                 drawWalls(cell, gc, x, y);
             }
@@ -233,5 +261,25 @@ public class Renderer {
         cells[r][c].setLeft(toggle);
         if (c - 1 >= 0)
             cells[r][c - 1].setRight(toggle);
+    }
+
+    public static Cell[][] getCells() {
+        return cells;
+    }
+
+    public static int getGridWidth() {
+        return gridWidth;
+    }
+
+    public static int getGridHeight() {
+        return gridHeight;
+    }
+
+    public static synchronized void setGameOver(boolean gameOver) {
+        Renderer.gameOver = gameOver;
+    }
+
+    public static synchronized boolean isGameOver() {
+        return gameOver;
     }
 }

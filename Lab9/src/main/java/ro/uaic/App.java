@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import ro.uaic.Problem;
 
 /**
  * JavaFX App
@@ -16,22 +17,10 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            FXMLLoader compulsory = new FXMLLoader(getClass().getResource("compulsory.fxml"));
-            Parent compulsoryP = FXMLLoader.load(getClass().getResource("compulsory.fxml"));
-            Parent homework = FXMLLoader.load(getClass().getResource("homework.fxml"));
-            Parent advanced = FXMLLoader.load(getClass().getResource("advanced.fxml"));
+            FXMLLoader lab = new FXMLLoader(getClass().getResource("lab.fxml"));
             stage.setTitle("Lab 9 - Emy Lungu");
 
-            Scene scene = new Scene(compulsory.load(), 768, 768);
-            scene.setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.DIGIT1) {
-                    stage.getScene().setRoot(compulsoryP);
-                } else if (event.getCode() == KeyCode.DIGIT2) {
-                    stage.getScene().setRoot(homework);
-                } else if (event.getCode() == KeyCode.DIGIT3) {
-                    stage.getScene().setRoot(advanced);
-                }
-            });
+            Scene scene = new Scene(lab.load(), 768, 768);
 
             stage.setScene(scene);
             stage.show();

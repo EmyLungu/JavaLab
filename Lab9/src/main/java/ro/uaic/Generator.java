@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import javafx.application.Platform;
-
 /**
  * Generator 
  */
@@ -14,7 +12,6 @@ public class Generator {
     private static boolean[][] visited;
     private static int gridWidth;
     private static int gridHeight;
-    private static volatile int delay = 5;
     public static boolean running = false;
 
     private static Cell lastHovered = null;
@@ -78,16 +75,6 @@ public class Generator {
                 neighbour.setHovered(true);
                 lastHovered = neighbour;
 
-                Platform.runLater(() -> {
-                    Renderer.drawOnCanvas(); 
-                });
-
-                try {
-                    Thread.sleep(delay * 100);
-                } catch (InterruptedException e) {
-                    System.err.println("Thread delay error");
-                }
-
                 DFS(cells, neighbour);
             }
         }
@@ -97,10 +84,6 @@ public class Generator {
         if (row < 0 || row >= gridHeight || col < 0 || col >= gridWidth || visited[row][col])
             return false;
         return true;
-    }
-
-    public static void setDelay(int delay) {
-        Generator.delay = delay;
     }
 
     public static boolean isRunning() {
