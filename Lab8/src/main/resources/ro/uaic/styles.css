@@ -1,0 +1,22 @@
+.bar {
+    -fx-background-color: #3d348b;
+    -fx-color: #FFF;
+    -fx-padding: 1em;
+}
+
+.label {
+    -fx-text-fill: #FFF;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-color: #f35b04;
+}
+
+.button:hover {
+    -fx-background-color: #f7b801;
+}
+
+#canvasHolder {
+    -fx-background-color: #7678ed;
+}
