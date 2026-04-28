@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Spinner;
 import ro.uaic.entities.Bunny;
+import ro.uaic.entities.Entity;
 import ro.uaic.entities.Robot;
 
 /**
@@ -24,7 +25,7 @@ public class Problem {
     Bunny bunny;
     Robot[] robots;
     private int numRobots;
-
+    private boolean isRunning = false;
 
     public void initialize() {
         Renderer.initialize(mazeCanvas, cells);
@@ -79,11 +80,21 @@ public class Problem {
     }
 
     @FXML
+    public void toggleRandom() {
+        Entity.setMovingRandom(!Entity.isMovingRandom());
+    }
+
+    @FXML
     public void start() {
-        if (this.cells == null || this.bunny ==  null || this.robots == null)
+        if (isRunning || this.cells == null || this.bunny ==  null || this.robots == null)
             return;
 
+        isRunning = true;
         Renderer.setGameOver(false);
+        Robot.initMemory(gridWidth, gridHeight);
+        bunny.initMemory(gridWidth, gridHeight);
+
+        DaemonManager.start();
 
         Thread bunnyThread = new Thread(bunny);
         Thread[] robotThreads = new Thread[this.numRobots];
@@ -94,14 +105,9 @@ public class Problem {
             robotThreads[i].start();
         }
 
-        // try {
-        //     bunnyThread.join();
-        //     for (int i = 0; i < this.numRobots; ++i) {
-        //         robotThreads[i].join();
-        //     }
-        // } catch (InterruptedException e) {
-        //     System.err.println("Thread join error: " + e);
-        // }
+        KeyboardListener.start(this.bunny, this.robots);
+
+        isRunning = false;
     }
 }
 

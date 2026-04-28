@@ -25,7 +25,7 @@ public class Renderer {
     private static Image bunnyImg;
     private static Image robotImg;
 
-    private static boolean gameOver = false;
+    private static volatile boolean gameOver = false;
 
     public static void initialize(Canvas mazeCanvas_, Cell[][] cells_) {
         cells = cells_;

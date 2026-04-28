@@ -14,5 +14,6 @@ client:
 clean:
 	@rm -rf .settings
 	@rm -rf target
+	@rm -rf bin
 	@rm .project
 	@rm .classpath

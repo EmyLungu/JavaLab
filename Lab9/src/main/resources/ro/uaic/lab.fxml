@@ -12,9 +12,9 @@
     <top>
         <HBox styleClass="bar" spacing="10" alignment="CENTER">
             <Label text="Grid width:"/>
-            <Spinner fx:id="widthSpinner" editable="true" initialValue="10" max="20" min="1"/>
+            <Spinner fx:id="widthSpinner" editable="true" initialValue="20" max="30" min="1"/>
             <Label text="Grid height:"/>
-            <Spinner fx:id="heightSpinner" editable="true" initialValue="10" max="20" min="1"/>
+            <Spinner fx:id="heightSpinner" editable="true" initialValue="20" max="30" min="1"/>
             <Button text="Generate" onAction="#generate"/>
         </HBox>
     </top>
@@ -31,6 +31,7 @@
             <Spinner fx:id="numRobotsSpinner" editable="true" initialValue="3" max="10" min="1"/>
             <Button text="Spawn" onAction="#spawn"/>
             <Button text="Start" onAction="#start"/>
+            <Button text="Toggle Random" onAction="#toggleRandom"/>
         </HBox>
     </bottom>
 </BorderPane>
