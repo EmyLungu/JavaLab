@@ -34,7 +34,6 @@ public class SolverService {
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (areRelated(allMovies.get(i), allMovies.get(j))) {
-                    System.out.println("Conflict");
                     model.arithm(selection[i], "+", selection[j], "<=", 1).post();
                     // Daca unul din ei e deja in lista
                     // Daca ambii sunt in lista => 1 + 1 <= 1 : fals
