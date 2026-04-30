@@ -20,7 +20,7 @@ public class App extends Application {
             FXMLLoader lab = new FXMLLoader(getClass().getResource("lab.fxml"));
             stage.setTitle("Lab 9 - Emy Lungu");
 
-            Scene scene = new Scene(lab.load(), 768, 768);
+            Scene scene = new Scene(lab.load(), 1080, 768);
 
             stage.setScene(scene);
             stage.show();

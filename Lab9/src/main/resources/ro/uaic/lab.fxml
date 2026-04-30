@@ -27,6 +27,8 @@
 
     <bottom>
         <HBox styleClass="bar" spacing="10" alignment="CENTER">
+            <Label text="Num Bunnies:"/>
+            <Spinner fx:id="numBunniesSpinner" editable="true" initialValue="1" max="10" min="1"/>
             <Label text="Num Robots:"/>
             <Spinner fx:id="numRobotsSpinner" editable="true" initialValue="3" max="10" min="1"/>
             <Button text="Spawn" onAction="#spawn"/>

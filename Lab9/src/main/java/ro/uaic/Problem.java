@@ -13,17 +13,25 @@ import ro.uaic.entities.Robot;
  * Problem
  */
 public class Problem {
-    @FXML private Spinner<Integer> widthSpinner;
-    @FXML private Spinner<Integer> heightSpinner;
-    @FXML private Spinner<Integer> numRobotsSpinner;
-    @FXML private Canvas mazeCanvas;
+    private static Random rand = new Random();
+    @FXML
+    private Spinner<Integer> widthSpinner;
+    @FXML
+    private Spinner<Integer> heightSpinner;
+    @FXML
+    private Spinner<Integer> numBunniesSpinner;
+    @FXML
+    private Spinner<Integer> numRobotsSpinner;
+    @FXML
+    private Canvas mazeCanvas;
 
     private Cell[][] cells;
     private int gridWidth;
     private int gridHeight;
 
-    Bunny bunny;
-    Robot[] robots;
+    private Bunny[] bunnies;
+    private Robot[] robots;
+    private int numBunnies;
     private int numRobots;
     private boolean isRunning = false;
 
@@ -33,9 +41,9 @@ public class Problem {
 
     @FXML
     public void generate() {
-        this.gridWidth  = widthSpinner.getValue();
+        this.gridWidth = widthSpinner.getValue();
         this.gridHeight = heightSpinner.getValue();
-        this.bunny  = null;
+        this.bunnies = null;
         this.robots = null;
 
         this.cells = new Cell[this.gridHeight][this.gridWidth];
@@ -52,31 +60,37 @@ public class Problem {
 
     @FXML
     public void spawn() {
-        if (this.cells == null || this.bunny != null || this.robots != null)
+        if (this.cells == null || this.bunnies != null || this.robots != null)
             return;
 
-        Random rand = new Random();
-        int row = rand.nextInt(gridHeight);
-        int col = rand.nextInt(gridWidth);
-        Cell cell = cells[row][col];
-        this.bunny = new Bunny(cell);
+        this.numBunnies = numBunniesSpinner.getValue();
+        this.bunnies = new Bunny[this.numBunnies];
+        for (int i = 0; i < numBunnies; ++i) {
+            Cell cell = getRandomEmptyCell();
+            this.bunnies[i] = new Bunny(cell);
+        }
 
         this.numRobots = numRobotsSpinner.getValue();
         this.robots = new Robot[this.numRobots];
 
         for (int i = 0; i < numRobots; ++i) {
-            row = rand.nextInt(gridHeight);
-            col = rand.nextInt(gridWidth);
-            cell = cells[row][col];
-
-            if (cell.isOccupied() == null) {
-                this.robots[i] = new Robot(cell);
-            } else {
-                --i;
-            }
+            Cell cell = getRandomEmptyCell();
+            this.robots[i] = new Robot(cell);
         }
 
         Renderer.drawOnCanvas();
+    }
+
+    private Cell getRandomEmptyCell() {
+        int row = Problem.rand.nextInt(gridHeight);
+        int col = Problem.rand.nextInt(gridWidth);
+        Cell cell = cells[row][col];
+
+        if (cell.isOccupied() == null) {
+            return cell;
+        } else {
+            return getRandomEmptyCell();
+        }
     }
 
     @FXML
@@ -86,28 +100,29 @@ public class Problem {
 
     @FXML
     public void start() {
-        if (isRunning || this.cells == null || this.bunny ==  null || this.robots == null)
+        if (isRunning || this.cells == null || this.bunnies == null || this.robots == null)
             return;
 
         isRunning = true;
         Renderer.setGameOver(false);
-        Robot.initMemory(gridWidth, gridHeight);
-        bunny.initMemory(gridWidth, gridHeight);
+        Robot.initMemory(gridWidth, gridHeight, bunnies);
 
         DaemonManager.start();
 
-        Thread bunnyThread = new Thread(bunny);
-        Thread[] robotThreads = new Thread[this.numRobots];
+        Thread[] bunnyThreads = new Thread[this.numBunnies];
+        for (int i = 0; i < this.numBunnies; ++i) {
+            bunnyThreads[i] = new Thread(bunnies[i]);
+            bunnyThreads[i].start();
+        }
 
-        bunnyThread.start();
+        Thread[] robotThreads = new Thread[this.numRobots];
         for (int i = 0; i < this.numRobots; ++i) {
             robotThreads[i] = new Thread(robots[i]);
             robotThreads[i].start();
         }
 
-        KeyboardListener.start(this.bunny, this.robots);
+        KeyboardListener.start(this.bunnies[0], this.robots);
 
         isRunning = false;
     }
 }
-
