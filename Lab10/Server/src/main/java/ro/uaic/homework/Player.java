@@ -5,6 +5,9 @@ package ro.uaic.homework;
  */
 public class Player {
     private double score;
+    public double response;
+    public long responseTime;
+    public double lastScore;
 
     public Player() {
         this.score = 0.0;

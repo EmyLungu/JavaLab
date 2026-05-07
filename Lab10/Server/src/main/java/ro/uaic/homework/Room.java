@@ -23,8 +23,8 @@ public class Room {
 
     private Map.Entry<String, String> currentQuestion;
 
-    private static int QUESTION_TIME = 15_000;
-    private static int QUIZ_SIZE = 3;
+    public static int QUESTION_TIME = 15_000;
+    public static int QUIZ_SIZE = 3;
 
     public Room(int maxPlayers) {
         this.maxPlayers = maxPlayers;
@@ -123,7 +123,11 @@ public class Room {
             Map.Entry<String, String> entry = questionsIter.next();
             this.currentQuestion = entry;
 
-            msg = "[" + numQuestion + "/" + 5 + "] What is the population of " + entry.getKey() + "?";
+            for (Map.Entry<Socket, Player> p : this.players.entrySet()) {
+                p.getValue().response = 0.0;
+            }
+
+            msg = "[" + numQuestion + "/" + QUIZ_SIZE + "] What is the population of " + entry.getKey() + "?";
             broadcast(msg);
             System.out.println(msg);
 
@@ -137,7 +141,8 @@ public class Room {
             long realPopulation = (long) Integer.parseInt(entry.getValue());
             msg = "The correct anwer was " + String.format("%,d", realPopulation) + "!";
             broadcast(msg);
-            broadcast(getAllScores());
+
+            updateScores();
 
             ++numQuestion;
         }
@@ -146,9 +151,7 @@ public class Room {
         GameServer.stopServer();
     }
 
-    public double getScore(String response) {
-        double userValue = parsePopulation(response);
-
+    public double getScore(double userValue) {
         String answerString = this.currentQuestion.getValue();
         double answerValue = (double) Integer.parseInt(answerString);
 
@@ -184,6 +187,41 @@ public class Room {
             System.err.println("Invalid number format: " + input);
             return 0.0;
         }
+    }
+
+    private void updateScores() {
+        for (Player p : this.players.values()) {
+            p.lastScore = getScore(p.response);
+        }
+        List<Map.Entry<Socket, Player>> sortedPlayers = new ArrayList<>(this.players.entrySet());
+        
+        sortedPlayers.sort((e1, e2) -> {
+            Player p1 = e1.getValue();
+            Player p2 = e2.getValue();
+
+            int scoreCompare = Double.compare(p2.lastScore, p1.lastScore);
+            if (scoreCompare != 0) {
+                return scoreCompare;
+            }
+
+            return Long.compare(p1.responseTime, p2.responseTime);
+        });
+
+        for (Map.Entry<Socket, Player> p : sortedPlayers) {
+            Player player = p.getValue();
+            player.addScore(player.lastScore);
+
+            try {
+                PrintWriter out = new PrintWriter(p.getKey().getOutputStream(), true);
+                out.printf("You got a score of %.2f\n", player.lastScore);
+                out.flush();
+            } catch (IOException e) {
+                System.out.println("Could not write to player!");
+            }
+        }
+
+        broadcast(getAllScores());
+        System.out.println(getAllScores());
     }
 
     public Player getPlayer(Socket socket) {

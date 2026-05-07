@@ -19,7 +19,8 @@ public class GameServer {
     private static Room room;
 
     public GameServer(int maxPlayers) throws Exception {
-        pool = Executors.newFixedThreadPool(8);
+        // pool = Executors.newFixedThreadPool(8);
+        pool = Executors.newVirtualThreadPerTaskExecutor();
 
         GameServer.room = new Room(maxPlayers);
 

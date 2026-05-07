@@ -17,6 +17,12 @@ server:
 client:
 	@cd Client && mvn exec:java -Dexec.mainClass="$(MAIN_CLASS)"
 
+random-bot:
+	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.RandomBot"
+
+llm-bot:
+	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.LLMBot"
+
 clean:
 	@rm -rf Client/.settings Server/.settings
 	@rm -rf Client/target Server/target

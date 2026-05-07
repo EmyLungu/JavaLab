@@ -6,7 +6,9 @@ package ro.uaic.homework;
 public class App {
     public static void main(String[] args) {
         try {
-            GameServer server = new GameServer(2);
+            Room.QUESTION_TIME = 3_000;
+            Room.QUIZ_SIZE = 3;
+            GameServer server = new GameServer(50);
         } catch (Exception e){
             System.err.println("Error inside the GameServer: " + e);
         }

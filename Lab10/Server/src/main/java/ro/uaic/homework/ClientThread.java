@@ -30,7 +30,9 @@ public class ClientThread extends Thread {
                 handleCommands(in, out, socket);
             }
         } catch (IOException e) {
-            System.err.println("Communication error... " + e);
+            if (GameServer.isRunning()) {
+                System.err.println("Communication error... " + e);
+            }
         }
     }
 
@@ -42,6 +44,7 @@ public class ClientThread extends Thread {
 
         if (request.equals(Commands.STOP_CLIENT.toString())) {
             out.println("Server stopped");
+            out.flush();
             this.running = false;
         } else if (request.equals(Commands.JOIN_GAME.toString())) {
             room.addPlayer(socket);
@@ -50,13 +53,13 @@ public class ClientThread extends Thread {
 
             if (currentPlayer != null) {
                 String response = in.readLine();
-                double score = room.getScore(response);
-
-                currentPlayer.addScore(score);
-                out.printf("You got a score of %.2f\n", score);
+                double value = Room.parsePopulation(response);
+                currentPlayer.response = value;
+                currentPlayer.responseTime = System.currentTimeMillis();
             }
         } else {
             out.println("Server received the request [" + request + "]");
+            out.flush();
             System.out.println("Got request [" + request + "] from [" + socket.getInetAddress() + "]");
         }
     }
