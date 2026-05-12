@@ -8,7 +8,8 @@ public class App {
         try {
             Room.QUESTION_TIME = 3_000;
             Room.QUIZ_SIZE = 3;
-            GameServer server = new GameServer(50);
+            int SERVER_SIZE = 12_000;
+            GameServer server = new GameServer(SERVER_SIZE);
         } catch (Exception e){
             System.err.println("Error inside the GameServer: " + e);
         }

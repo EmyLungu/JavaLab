@@ -1,5 +1,5 @@
 # make sever TYPE=homwork
-TYPE ?= compulsory
+TYPE ?= homework
 
 ifeq ($(TYPE),homework)
     PKG = homework
@@ -22,6 +22,9 @@ random-bot:
 
 llm-bot:
 	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.LLMBot"
+
+run-many:
+	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.AppMany"
 
 clean:
 	@rm -rf Client/.settings Server/.settings

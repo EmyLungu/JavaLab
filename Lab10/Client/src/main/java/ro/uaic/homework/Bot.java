@@ -9,14 +9,14 @@ import java.net.UnknownHostException;
 /**
  * Bot
  */
-public abstract class Bot {
+public abstract class Bot extends Thread {
     private static boolean running;
 
     public Bot() {
         Bot.running = false;
     }
 
-    public void run() throws IOException {
+    public void run() {
         String serverAddress = "127.0.0.1";
         int PORT = 8100;
         try (
@@ -36,6 +36,8 @@ public abstract class Bot {
             }
         } catch (UnknownHostException e) {
             System.err.println("No server listening... " + e);
+        } catch (IOException e) {
+            System.err.println("IOException... " + e);
         }
     }
 
