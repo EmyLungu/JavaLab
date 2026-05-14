@@ -1,0 +1,45 @@
+# No Cacheing
+
+.forks(0)
+.warmupIterations(3)
+.measurementIterations(10)
+
+Benchmark                             Mode  Cnt  Score   Error  Units
+TestJMH.testDynamicSearchPerformance  avgt   10  0.559 ± 0.022  ms/op
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:14 min
+[INFO] Finished at: 2026-05-14T20:12:52+03:00
+[INFO] ------------------------------------------------------------------------
+
+-------------------------------------
+
+# Cacheing
+
+.forks(0)
+.warmupIterations(3)
+.measurementIterations(10)
+
+0.048 ms/op
+# Warmup Iteration   2: 0.039 ms/op
+# Warmup Iteration   3: 0.038 ms/op
+Iteration   1: 0.038 ms/op
+Iteration   2: 0.038 ms/op
+Iteration   3: 0.039 ms/op
+Iteration   4: 0.037 ms/op
+Iteration   5: 0.037 ms/op
+Iteration   6: 0.037 ms/op
+Iteration   7: 0.037 ms/op
+Iteration   8: 0.037 ms/op
+Iteration   9: 0.039 ms/op
+0.037 ms/op
+
+Benchmark                             Mode  Cnt  Score   Error  Units
+TestJMH.testDynamicSearchPerformance  avgt   10  0.038 ± 0.001  ms/op
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:13 min
+[INFO] Finished at: 2026-05-14T20:40:49+03:00
+[INFO] ------------------------------------------------------------------------
