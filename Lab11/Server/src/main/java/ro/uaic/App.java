@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class App {
     public static void main(String[] args) {
         try {
-            Room.QUESTION_TIME = 16_000;
+            Room.QUESTION_TIME = 10_000;
             Room.QUIZ_SIZE = 3;
             int SERVER_SIZE = 2;
 

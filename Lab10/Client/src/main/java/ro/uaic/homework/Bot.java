@@ -6,11 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /**
  * Bot
  */
 public abstract class Bot extends Thread {
     private static boolean running;
+    private String last_question = "";
 
     public Bot() {
         Bot.running = false;
@@ -64,11 +67,23 @@ public abstract class Bot extends Thread {
             out.println(answer);
             out.flush();
 
+            last_question = input;
+
             System.out.println("My answer: " + answer);
+
+        }
+
+        Pattern pattern = Pattern.compile("The correct anwer was ([\\d,]+)!");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            String realPopulation= matcher.group(1);
+
+            this.processAnswer(last_question, realPopulation);
         }
     }
 
     protected abstract String getAnswer(String question);
+    protected abstract void processAnswer(String question, String answer);
 
     public static boolean isRunning() {
         return running;

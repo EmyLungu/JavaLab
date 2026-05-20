@@ -6,7 +6,7 @@ package ro.uaic.homework;
 public class AppMany {
     public static void main(String[] args) {
         try {
-            int numBots = 12_000;
+            int numBots = 10_000;
             Thread[] threads = new Thread[numBots];
 
             for (int i = 0; i < numBots; ++i) {

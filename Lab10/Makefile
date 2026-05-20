@@ -23,6 +23,9 @@ random-bot:
 llm-bot:
 	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.LLMBot"
 
+custom-bot:
+	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.CustomBot"
+
 run-many:
 	@cd Client && mvn exec:java -Dexec.mainClass="ro.uaic.homework.AppMany"
 

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class LLMBot extends Bot {
     protected String getAnswer(String question) {
-        String apiKey = "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";
+        String apiKey = "";
         String jsonBody = String.format("""
             {
                 "model": "llama-3.3-70b-versatile",
@@ -47,6 +47,9 @@ public class LLMBot extends Bot {
         Integer value = 3;
         return value.toString();
     }
+
+    @Override
+    protected void processAnswer(String question, String answer) {}
 
     public static void main(String[] args) {
         try {

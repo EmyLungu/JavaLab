@@ -6,12 +6,16 @@ import java.util.Random;
  * RandomBot
  */
 public class RandomBot extends Bot {
+    @Override
     protected String getAnswer(String question) {
         Random rand = new Random();
         Integer value = rand.nextInt(30_000, 100_000_000);
 
         return value.toString();
     }
+
+    @Override
+    protected void processAnswer(String question, String answer) {}
 
     public static void main(String[] args) {
         try {
