@@ -1,7 +1,6 @@
 package ro.uaic.com;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import ro.uaic.app.LocaleExplore;

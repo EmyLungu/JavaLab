@@ -1,6 +1,5 @@
 package ro.uaic.com;
 
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -8,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Currency;
-import java.util.Date;
 import java.util.Locale;
 
 import ro.uaic.app.LocaleExplore;
